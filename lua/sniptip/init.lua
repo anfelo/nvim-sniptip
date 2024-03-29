@@ -10,7 +10,6 @@ local function escape_double_quotes(text)
     return escaped_text
 end
 
--- Function to trim indentation of selected text
 local function trim_indentation(selected_text)
     -- Find the minimum indentation level among all lines
     local min_indent = math.huge
@@ -29,6 +28,56 @@ local function trim_indentation(selected_text)
     end
 
     return trimmed_text
+end
+
+local function show_sniptips_picker(opts)
+    local actions = require("telescope.actions")
+    local action_state = require("telescope.actions.state")
+    local finders = require("telescope.finders")
+    local make_entry = require("telescope.make_entry")
+    local pickers = require("telescope.pickers")
+    local previewers = require("telescope.previewers")
+
+    local conf = require("telescope.config").values
+
+    local globbed_files = vim.fn.globpath("/home/anfelo/.sniptip/", "*", true, true)
+    local acceptable_files = {}
+    for _, v in ipairs(globbed_files) do
+        table.insert(acceptable_files, vim.fn.fnamemodify(v, ":t"))
+    end
+
+    pickers
+        .new(opts, {
+            prompt_title = "Snippets",
+            finder = finders.new_table({
+                results = acceptable_files,
+                entry_maker = function(line)
+                    return make_entry.set_default_entry_mt({
+                        ordinal = line,
+                        display = line,
+                        filename = "/home/anfelo/.sniptip/" .. line,
+                    }, opts)
+                end,
+            }),
+            previewer = previewers.cat.new(opts),
+            sorter = conf.generic_sorter(opts),
+            attach_mappings = function(prompt_bufnr)
+                actions.select_default:replace(function()
+                    local selection = action_state.get_selected_entry()
+                    if selection == nil then
+                        print("No selection")
+                        return
+                    end
+
+                    actions.close(prompt_bufnr)
+                    print("Sniptip selected:", selection.display)
+                    M.show(selection.display)
+                end)
+
+                return true
+            end,
+        })
+        :find()
 end
 
 M.init = function()
@@ -64,6 +113,10 @@ end
 
 M.add = function(name)
     if name == nil then
+        name = vim.fn.input("Enter name: ")
+    end
+
+    if name == nil or name == "" then
         print("sniptip name is required")
         return
     end
@@ -81,10 +134,34 @@ M.add = function(name)
     local handle = assert(io.popen(cmd .. " 2>&1"), string.format("Unable to execute cmd - %q", cmd))
     local result = assert(handle:read("*a"), "Unable to read the result")
 
+    if string.find(result, "Sniptips not initialized") then
+        print(result)
+
+        handle:close()
+        return
+    end
+
     print(result)
     handle:close()
 end
 
-M.add("bubblesort")
+M.list = function()
+    local cmd = "sniptip list"
+    local handle = assert(io.popen(cmd .. " 2>&1"), string.format("Unable to execute cmd - %q", cmd))
+    local result = handle:read("*a")
+
+    if string.find(result, "Sniptips not initialized") then
+        print(result)
+
+        handle:close()
+        return
+    end
+
+    show_sniptips_picker({})
+
+    handle:close()
+end
+
+M.add()
 
 return M
