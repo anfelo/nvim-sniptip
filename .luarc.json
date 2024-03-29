@@ -1,0 +1,7 @@
+{
+    "workspace.library": [
+        "/home/anfelo/.local/share/nvim-linux64/share/nvim/runtime",
+        "${3rd}/busted/library",
+        "${3rd}/luassert/library"
+    ]
+}

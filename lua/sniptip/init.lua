@@ -162,6 +162,4 @@ M.list = function()
     handle:close()
 end
 
-M.add()
-
 return M

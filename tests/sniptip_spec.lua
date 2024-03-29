@@ -1,0 +1,5 @@
+describe("sniptip", function()
+    it("can be required", function()
+        require("sniptip")
+    end)
+end)
