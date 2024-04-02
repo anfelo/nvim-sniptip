@@ -81,6 +81,11 @@ local function show_sniptips_picker(opts)
 end
 
 M.init = function()
+    if vim.fn.executable("sniptip") == 0 then
+        error("sniptip is not installed")
+        return
+    end
+
     local cmd = "sniptip init"
     local handle = assert(io.popen(cmd .. " 2>&1"), string.format("Unable to execute cmd - %q", cmd))
     local result = handle:read("*a")
@@ -90,6 +95,11 @@ M.init = function()
 end
 
 M.show = function(name)
+    if vim.fn.executable("sniptip") == 0 then
+        error("sniptip is not installed")
+        return
+    end
+
     if name == nil then
         print("sniptip name is required")
         return
@@ -112,6 +122,11 @@ M.show = function(name)
 end
 
 M.add = function(name)
+    if vim.fn.executable("sniptip") == 0 then
+        error("sniptip is not installed")
+        return
+    end
+
     if name == nil then
         name = vim.fn.input("Enter name: ")
     end
@@ -146,6 +161,11 @@ M.add = function(name)
 end
 
 M.list = function()
+    if vim.fn.executable("sniptip") == 0 then
+        error("sniptip is not installed")
+        return
+    end
+
     local cmd = "sniptip list"
     local handle = assert(io.popen(cmd .. " 2>&1"), string.format("Unable to execute cmd - %q", cmd))
     local result = handle:read("*a")
