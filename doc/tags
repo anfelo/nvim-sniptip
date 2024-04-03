@@ -1,0 +1,5 @@
+sniptip.add()	sniptip.txt	/*sniptip.add()*
+sniptip.list()	sniptip.txt	/*sniptip.list()*
+sniptip.nvim	sniptip.txt	/*sniptip.nvim*
+sniptip.push()	sniptip.txt	/*sniptip.push()*
+sniptip.show()	sniptip.txt	/*sniptip.show()*

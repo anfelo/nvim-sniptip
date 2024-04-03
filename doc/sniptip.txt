@@ -1,0 +1,42 @@
+================================================================================
+                                                                *sniptip.nvim*
+
+This plugin is a wrapper around the [sniptip tool](https://github.com/anfelo/sniptip)
+to be able to use it from within Neovim. It provides a simple API to save snippets
+of text and retrieve them later. See examples below:
+
+                                                              *sniptip.push()*
+sniptip.init()
+
+    Initializes the sniptip tool. It creates a directory in the user's home to
+    store the snippets.
+
+
+                                                               *sniptip.add()*
+
+sniptip.add({name})
+
+    Adds a new snippet using the selected lines in visual mode as the content.
+    The user is prompted to enter the snippet's {name}.
+
+        sniptip.add("my_snippet")
+
+
+                                                              *sniptip.show()*
+
+sniptip.show({name})
+
+    Selects a snippet that is already saved by the {name}. If the snippet
+    exists it will be pasted below the cursor.
+
+        sniptip.show("my_snippet")
+
+
+                                                              *sniptip.list()*
+sniptip.list()
+
+    Displays a telescope picker with a list of all the snippets saved. After
+    selecting one, the snippet will be pasted below the cursor.
+
+
+vim:tw=78:ts=8:ft=help:norl:
