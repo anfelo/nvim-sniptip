@@ -40,7 +40,7 @@ local function show_sniptips_picker(opts)
 
     local conf = require("telescope.config").values
 
-    local globbed_files = vim.fn.globpath("/home/anfelo/.sniptip/", "*", true, true)
+    local globbed_files = vim.fn.globpath("~/.sniptip/", "*", true, true)
     local acceptable_files = {}
     for _, v in ipairs(globbed_files) do
         table.insert(acceptable_files, vim.fn.fnamemodify(v, ":t"))
